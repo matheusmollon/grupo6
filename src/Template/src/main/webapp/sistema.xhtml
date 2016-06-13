@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Sistema de Divisão de Contas</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h3>Você entrou no Sistema de Divisão de Contas.</h3>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="uname" 
+                               value="Nome de usuário: " />
+                <h:outputText id="uname" 
+                              value="#{acessoBean.usuario.unome}" />            
+
+                <h:outputLabel for="senha" 
+                               value="Senha: " />
+                <h:outputText id="senha" 
+                              value="#{acessoBean.usuario.usenha}" />
+
+                <h:outputLabel for="ucelular" 
+                               value="Número de celular: " />
+                <h:outputText id="ucelular" 
+                              value="#{acessoBean.usuario.ucelular}" />
+            </h:panelGrid>
+            <h:commandButton action="#{acessoBean.logout()}"
+                             value="Sair" />
+        </h:form>
+    </h:body>
+</html>
+
