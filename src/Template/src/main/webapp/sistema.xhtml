@@ -12,18 +12,21 @@
                 <h:outputLabel for="uname" 
                                value="Nome de usuário: " />
                 <h:outputText id="uname" 
-                              value="#{acessoBean.usuario.unome}" />            
+                              value="#{usuarioBean.usuarioSession.unome}" />            
 
                 <h:outputLabel for="senha" 
                                value="Senha: " />
                 <h:outputText id="senha" 
-                              value="#{acessoBean.usuario.usenha}" />
+                              value="#{usuarioBean.usuarioSession.usenha}" />
 
                 <h:outputLabel for="ucelular" 
                                value="Número de celular: " />
                 <h:outputText id="ucelular" 
-                              value="#{acessoBean.usuario.ucelular}" />
+                              value="#{usuarioBean.usuarioSession.ucelular}" />
             </h:panelGrid>
+            <h:commandButton action="#{navigationBean.redirecionarAtualizarUsuario()}"
+                             value="Atualizar dados de usuário" />
+            <br />
             <h:commandButton action="#{acessoBean.logout()}"
                              value="Sair" />
         </h:form>

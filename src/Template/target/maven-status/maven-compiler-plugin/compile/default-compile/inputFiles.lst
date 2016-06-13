@@ -1,5 +1,7 @@
 /home/hideki/NetBeansProjects/Projeto/grupo6/src/Template/src/main/java/br/web/bean/NavigationBean.java
 /home/hideki/NetBeansProjects/Projeto/grupo6/src/Template/src/main/java/br/jpa/controller/exceptions/PreexistingEntityException.java
+/home/hideki/NetBeansProjects/Projeto/grupo6/src/Template/src/main/java/br/web/filter/LoginFilter.java
+/home/hideki/NetBeansProjects/Projeto/grupo6/src/Template/src/main/java/br/web/utils/SessionContext.java
 /home/hideki/NetBeansProjects/Projeto/grupo6/src/Template/src/main/java/br/jpa/controller/exceptions/IllegalOrphanException.java
 /home/hideki/NetBeansProjects/Projeto/grupo6/src/Template/src/main/java/br/web/bean/AcessoBean.java
 /home/hideki/NetBeansProjects/Projeto/grupo6/src/Template/src/main/java/br/jpa/entity/Usuario.java

@@ -26,7 +26,15 @@ public class NavigationBean {
         return "cadastrarUsuario?faces-redirect=true";
     }
     
+    public String redirecionarAtualizarUsuario() {
+        return "atualizarUsuario?faces-redirect=true";
+    }
+    
     public String redirecionarIndex() {
         return "index?faces-redirect=true";
+    }
+    
+    public String redirecionarSistema() {
+        return "sistema?faces-redirect=true";
     }
 }

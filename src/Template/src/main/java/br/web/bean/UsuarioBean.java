@@ -7,6 +7,7 @@ package br.web.bean;
 
 import br.jpa.entity.Usuario;
 import br.jpa.controller.UsuarioJpaController;
+import br.web.utils.SessionContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -69,6 +70,29 @@ public class UsuarioBean {
         } else {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senhas não coincidem!", "Falha no cadastro!");
             FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
+    public Usuario getUsuarioSession() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TemplatePU");
+        UsuarioJpaController ujc = new UsuarioJpaController(emf);
+
+        return ujc.findUsuario(SessionContext.getInstance().getAttribute("unome").toString());
+    }
+
+    public void atualizarUsuario() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TemplatePU");
+        UsuarioJpaController ujc = new UsuarioJpaController(emf);
+
+        Usuario usuarioAtualizado = ujc.findUsuario(SessionContext.getInstance().getAttribute("unome").toString());
+        usuarioAtualizado.setUcelular(this.usuario.getUcelular());
+        System.out.println(usuarioAtualizado.getUnome() + "\n" + usuarioAtualizado.getUsenha() + "\n" + usuarioAtualizado.getUcelular());
+
+        try {
+            ujc.edit(usuarioAtualizado);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/Template/faces/sistema.xhtml");
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
         }
     }
 

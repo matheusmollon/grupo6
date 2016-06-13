@@ -7,10 +7,11 @@ package br.web.bean;
 
 import br.jpa.controller.UsuarioJpaController;
 import br.jpa.entity.Usuario;
+import br.web.utils.SessionContext;
 import java.io.IOException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,7 +21,7 @@ import javax.persistence.Persistence;
  * @author hideki
  */
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class AcessoBean {
     
     private Usuario usuario;
@@ -40,7 +41,7 @@ public class AcessoBean {
         this.usuario = usuario;
     }
     
-    public void validarUnomeUsenha() {
+    public void login() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("TemplatePU");
         UsuarioJpaController ujc = new UsuarioJpaController(emf);
         boolean valid = true;
@@ -52,7 +53,7 @@ public class AcessoBean {
         }
 
         if (valid) {
-            usuario.setUcelular(usuarioBanco.getUcelular());
+            SessionContext.getInstance().setAttribute("unome", usuario.getUnome());
             
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/Template/faces/sistema.xhtml");
@@ -68,7 +69,8 @@ public class AcessoBean {
         }
     }
     
-    public String logout() {        
+    public String logout() {  
+        SessionContext.getInstance().encerrarSessao();
         return "index?faces-redirect=true";
     }
 }
