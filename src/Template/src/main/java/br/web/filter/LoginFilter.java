@@ -33,10 +33,8 @@ public class LoginFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession(true);
 
         if (session.getAttribute("unome") != null) {
-            System.out.println("Tem unome!");
             chain.doFilter(request, response);
         } else {
-            System.out.println("Não tem unome");
             ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/faces/index.xhtml");
         }
     }

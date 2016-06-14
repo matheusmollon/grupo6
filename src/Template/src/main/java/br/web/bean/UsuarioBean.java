@@ -86,7 +86,6 @@ public class UsuarioBean {
 
         Usuario usuarioAtualizado = ujc.findUsuario(SessionContext.getInstance().getAttribute("unome").toString());
         usuarioAtualizado.setUcelular(this.usuario.getUcelular());
-        System.out.println(usuarioAtualizado.getUnome() + "\n" + usuarioAtualizado.getUsenha() + "\n" + usuarioAtualizado.getUcelular());
 
         try {
             ujc.edit(usuarioAtualizado);
