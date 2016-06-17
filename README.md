@@ -1,7 +1,7 @@
 # Instruções para execução do projeto:
 
  - Antes de realizar o commit pelo NetBeans limpar o projeto (clicar com o botão direito sobre o projeto e escolher a opção "Limpar" ou "Clean");
- - O arquivo persistence.xml localizado em grupo6/src/Template/src/main/resources/META-INF/ pode precisar de alterações para funcionar com contribuidores diferentes, atualmente está configurado para:
+ - O arquivo persistence.xml localizado em grupo6/src/Aplicativo/src/main/resources/META-INF/ pode precisar de alterações para funcionar com contribuidores diferentes, atualmente está configurado para:
    - Host: 192.168.56.101
    - Base de dados: grupo6
    - Usuário: teste
