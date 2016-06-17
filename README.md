@@ -1,5 +1,5 @@
 # grupo6
----
+
 a. como fazer o clone do projeto no github
 b. qual o nome do projeto (criar, caso não tenha)
 b. qual o nome do banco de dados que sera utilizado
