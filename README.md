@@ -1,14 +1,10 @@
 # grupo6
 ---
 Instruções gerais sobre o uso do GitHub:
-
-a. como fazer o clone do projeto no github
-
-b. qual o nome do projeto (criar, caso não tenha)
-
-b. qual o nome do banco de dados que sera utilizado
-
-c. explicar qual a finalidade dos diretórios
+a. como fazer o clone do projeto no github;
+b. qual o nome do projeto (criar, caso não tenha);
+b. qual o nome do banco de dados que sera utilizado;
+c. explicar qual a finalidade dos diretórios.
 
  - Para os itens a e b veja o arquivo "Como utilizar o Github e NetBeans" presente no diretório "doc".
  - O banco de dados (b) que será utilizado será o PostgreSQL.
