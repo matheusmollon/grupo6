@@ -1,12 +1,10 @@
-# grupo6
-
-Instruções para execução do projeto:
+# Instruções para execução do projeto:
 
  - Antes de realizar o commit pelo NetBeans limpar o projeto (clicar com o botão direito sobre o projeto e escolher a opção "Limpar" ou "Clean").
 
 ---
 
-Instruções gerais sobre o uso do GitHub para a execução do projeto:
+# Instruções gerais sobre o uso do GitHub para a execução do projeto:
 
 a. como fazer o clone do projeto no github;
 
