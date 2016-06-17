@@ -6,6 +6,7 @@
    - Base de dados: grupo6
    - Usuário: teste
    - Senha: teste
+ - O arquivo script.sql contém a construção das tabelas da base de dados.
 
 ---
 
