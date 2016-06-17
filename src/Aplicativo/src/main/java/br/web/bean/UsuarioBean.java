@@ -79,15 +79,38 @@ public class UsuarioBean {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("AplicativoPU");
         UsuarioJpaController ujc = new UsuarioJpaController(emf);
 
-        Usuario usuarioAtualizado = ujc.findUsuario(SessionContext.getInstance().getSessionAttribute("uNome").toString());
+        Usuario usuarioAtualizado = this.getUsuarioSession();
         usuarioAtualizado.setUCelular(this.usuario.getUCelular());
 
         try {
             ujc.edit(usuarioAtualizado);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/Aplicativo/faces/sistema.xhtml");
         } catch (Exception ex) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha na atualização dos dados!", "Falha na atualização dos dados!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             System.out.println(ex.toString());
         }
     }
-    
+
+    public void excluirUsuario() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AplicativoPU");
+        UsuarioJpaController ujc = new UsuarioJpaController(emf);
+
+        Usuario usuarioExcluido = this.getUsuarioSession();
+
+        if (this.usuario.getUSenha().equals(usuarioExcluido.getUSenha())) {
+            try {
+                ujc.destroy(usuarioExcluido.getUNome());
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/Aplicativo/faces/login.xhtml");
+            } catch (Exception ex) {
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha na exclusão do usuário!", "Falha na exclusão do usuário!");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                System.out.println(ex.toString());
+            }
+        } else {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senha incorreta!", "Senha incorreta!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
 }
