@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Visualizar Conta</title>
+    </h:head>
+    <h:body>  
+        <p:growl autoUpdate="true" /> 
+
+        <c:set var="conta" value="#{contaBean.contaSession}" scope="request" />
+        <c:set var="estimativaTotal" value="#{contaBean.estimativaTotal()}" scope="request" />
+        <c:set var="estimativaIndividual" value="#{contaBean.estimativaIndividual()}" scope="request" />
+
+        <p:toolbar>
+            <f:facet name="right">
+                <h:form>
+                    <p:commandButton action="#{navigationBean.redirectSistema()}"
+                                     value="Voltar ao sistema principal" />                     
+                </h:form>               
+            </f:facet>
+        </p:toolbar>
+
+        <br />
+
+        <p:panel header="Informações">
+            <h:form>
+                <h:panelGrid columns="2">                
+                    <p:outputLabel for="cNome" 
+                                   value="Nome da conta: " />
+                    <h:outputText id="cNome" 
+                                  value="#{conta.CNome}" />  
+
+                    <p:outputLabel for="cGerente" 
+                                   value="Gerente da conta: " />
+                    <h:outputText id="cGerente" 
+                                  value="#{conta.CGerente}" />
+
+                    <p:outputLabel for="cTaxaServico"
+                                   value="Taxa de serviço: " />
+                    <h:outputText id="cTaxaServico"
+                                  value="#{conta.CTaxaServico}%" />
+
+                    <p:outputLabel for="cValor" 
+                                   value="Valor total: " />
+                    <h:outputText id="cValor" 
+                                  value="#{conta.CValor}">
+                        <f:convertNumber type="currency" currencySymbol="R$" />
+                    </h:outputText>
+
+                    <p:outputLabel for="cAberto"
+                                   value="Situção da conta: " />
+                    <h:outputText id="cAberto"
+                                  value="#{conta.CAberto ? 'Aberta' : 'Fechada'}" />
+
+                    <p:outputLabel for="cEstimativaTotal"
+                                   value="Custo estimado total: "
+                                   rendered="#{conta.CAberto}" />
+                    <h:outputText id="cEstimativaTotal"
+                                  rendered="#{conta.CAberto}"
+                                  value="#{estimativaTotal == 0.0 ? 'não estimado' : estimativaTotal}">
+                        <f:convertNumber type="currency" currencySymbol="R$" />
+                    </h:outputText>
+
+                    <p:outputLabel for="cEstimativaIndividual"
+                                   value="Custo estimado por pessoa: "
+                                   rendered="#{conta.CAberto}" />
+                    <h:outputText id="cEstimativaIndividual"
+                                  rendered="#{conta.CAberto}"
+                                  value="#{estimativaIndividual == 0.0 ? 'não estimado' : estimativaIndividual}">
+                        <f:convertNumber type="currency" currencySymbol="R$" />
+                    </h:outputText>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+
+        <br />
+
+        <p:panel id="panelGerenciar"
+                 header="Usuários">
+            <h:form>
+                <p:dataTable value="#{conta.usuarioContaCollection}"
+                             var="usuarioConta">
+                    <p:column headerText="Nome de usuário">
+                        <h:outputText value="#{usuarioConta.usuario.UNome}" />
+                    </p:column>
+
+                    <p:column headerText="Valor individual">
+                        <h:outputText value="#{usuarioConta.UCValor}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable> 
+            </h:form>
+        </p:panel>
+
+        <br />
+
+        <p:panel id="panelProdutos"
+                 header="Produtos">
+            <h:form id="form-data">
+                <p:dataTable value="#{conta.produtoCollection}"
+                             var="p"
+                             emptyMessage="Nenhum produto cadastrado.">
+                    <p:column headerText="Produto"> 
+                        <h:outputText value="#{p.PNome}"/>
+                    </p:column>
+
+                    <p:column headerText="Quantidade de usuários"> 
+                        <h:outputText value ="#{p.qtdeUsuarioProduto()}" />
+                    </p:column> 
+
+                    <p:column headerText="Preço"> 
+                        <h:outputText value="#{p.PValor}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Detalhes">                       
+                        <p:rowToggler />
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <p:dataTable value="#{p.usuarioCollection}"
+                                     var="u1">
+                            <p:column headerText="Usuarios">
+                                <h:outputText value ="#{u1.UNome}"/>
+                            </p:column> 
+                        </p:dataTable>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </h:form> 
+        </p:panel> 
+    </h:body>
+</html>
+

@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cadastrar Usuário</title>
+    </h:head>
+    <h:body>
+        <p:growl autoUpdate="true" /> 
+        
+        <p:panel header="Cadastro de usuário">
+            <h:form>
+                <h:outputText value="* dados obrigatórios"
+                              style="color: red" />
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="unome" 
+                                       value="Nome de usuário: " />
+                        <p:inputText id="unome" 
+                                     required="true" 
+                                     value="#{usuarioBean.usuario.UNome}" 
+                                     requiredMessage="Informe um nome de usuário." 
+                                     validatorMessage="Nome de usuário deve ter no máximo 30 caracteres."
+                                     pt:placeholder="Ex.: jose, maria...">
+                            <f:validateLength minimum="1" maximum="30" />
+                        </p:inputText>
+
+                        <p:outputLabel for="ucelular" 
+                                       value="Número de celular: " />
+                        <p:inputText id="ucelular" 
+                                     required="true" 
+                                     value="#{usuarioBean.usuario.UCelular}" 
+                                     requiredMessage="Informe um número de celular."
+                                     validatorMessage="Número de celular inválido."
+                                     pt:placeholder="Ex.: 01 234567890">
+                            <f:validateRegex pattern="[0-9]{2} [0-9]{8,9}" />
+                        </p:inputText>
+
+                        <p:outputLabel for="usenha" 
+                                       value="Senha: " />
+                        <p:password id="usenha" 
+                                    required="true" 
+                                    value="#{usuarioBean.usuario.USenha}" 
+                                    requiredMessage="Informe uma senha."
+                                    validatorMessage="Senha deve ter no máximo 30 caracteres.">
+                            <f:validateLength minimum="1" maximum="30" />
+                        </p:password>
+
+                        <p:outputLabel for="confirmausenha" 
+                                       value="Confirmar senha: " />
+                        <p:password id="confirmausenha" 
+                                    required="true" 
+                                    value="#{usuarioBean.confirmaSenha}" 
+                                    requiredMessage="Confirme a senha."
+                                    validatorMessage="Senha deve ter no máximo 30 caractéres.">
+                            <f:validateLength minimum="1" maximum="30" />
+                        </p:password>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" style="float: right">
+                        <p:commandButton action="#{usuarioBean.cadastrarUsuario()}" 
+                                         value="Confirmar" />
+                        <p:commandButton immediate="true" 
+                                         action="#{navigationBean.redirectLogin()}" 
+                                         value="Cancelar" />
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+    </h:body>
+</html>
+

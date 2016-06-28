@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Gerenciar Conta</title> 
+        #{sessionContextBean.gerenciarContaSessionContext()}
+    </h:head>
+    <h:body>  
+        <p:growl autoUpdate="true" /> 
+        
+        <c:set var="conta" value="#{contaBean.contaSession}" scope="request" />
+        <c:set var="estimativaTotal" value="#{contaBean.estimativaTotal()}" scope="request" />
+        <c:set var="estimativaIndividual" value="#{contaBean.estimativaIndividual()}" scope="request" />
+
+        <p:toolbar>  
+            <f:facet name="left">
+                <h:form>
+                    <p:commandButton action="#{contaBean.redirectFecharConta()}" 
+                                     value="Fechar Conta"/>
+
+                    <p:commandButton action="#{navigationBean.redirectAtualizacaoConta()}" 
+                                     value="Atualizar conta" />            
+
+                    <p:commandButton action="#{contaBean.excluirConta()}"
+                                     value="Excluir conta" />            
+                </h:form>
+            </f:facet>
+
+            <f:facet name="right">
+                <h:form>
+                    <p:commandButton action="#{navigationBean.redirectSistema()}"
+                                     value="Voltar ao sistema principal" />                     
+                </h:form>               
+            </f:facet>
+        </p:toolbar>
+
+        <br />
+
+        <p:tabView id="tabView">
+            <p:tab title="Informações">
+                <h:form id="formInformacoes">
+                    <h:panelGrid columns="2">                
+                        <p:outputLabel for="cNome" 
+                                       value="Nome da conta: " />
+                        <h:outputText id="cNome" 
+                                      value="#{conta.CNome}" />
+
+                        <p:outputLabel for="cTaxaServico"
+                                       value="Taxa de serviço: " />
+                        <h:outputText id="cTaxaServico"
+                                      value="#{conta.CTaxaServico}%" />
+
+                        <p:outputLabel for="cValor" 
+                                       value="Valor total: " />
+                        <h:outputText id="cValor" 
+                                      value="#{conta.CValor}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+                        
+                        <p:outputLabel for="cAberto"
+                                       value="Situção da conta: " />
+                        <h:outputText id="cAberto"
+                                      value="#{conta.CAberto ? 'Aberta' : 'Fechada'}" />
+                        
+                        <p:outputLabel for="cEstimativaTotal"
+                                       value="Custo estimado total: " />
+                        <h:outputText id="cEstimativaTotal"
+                                      value="#{estimativaTotal == 0.0 ? 'não estimado' : estimativaTotal}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+                        
+                        <p:outputLabel for="cEstimativaIndividual"
+                                       value="Custo estimado por pessoa: " />
+                        <h:outputText id="cEstimativaIndividual"
+                                      value="#{estimativaIndividual == 0.0 ? 'não estimado' : estimativaIndividual}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+                    </h:panelGrid>
+                </h:form>
+            </p:tab>
+
+            <p:tab title="Adicionar usuário">
+                <h:form>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="nome"
+                                       value="Buscar:" />
+                        <p:inputText id="nome" 
+                                     value="#{searchBean.UNome}"
+                                     pt:placeholder="Informe um nome de usuário..."
+                                     autocomplete="off">
+                            <f:ajax event="keyup" render="resultTable" />
+                            <f:ajax event="keyup" render="resultOut" />
+                        </p:inputText>
+                    </h:panelGrid>
+
+                    <p:dataTable id="resultTable"
+                                 value="#{searchBean.searchResults()}"
+                                 var="usuario"
+                                 emptyMessage="Nenhum resultado encontrado.">
+                        <p:column headerText="Nome de usuário">
+                            <h:outputText value="#{usuario.UNome}" />
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton action="#{usuarioContaBean.cadastrarUsuarioConta(usuario.UNome)}" 
+                                             update=":panelGerenciar, :tabView:formAdicionarProduto"
+                                             value="Adicionar" /> 
+                        </p:column>
+                    </p:dataTable>           
+                </h:form>
+            </p:tab>
+
+            <p:tab title="Adicionar produto">
+                <h:form id="formAdicionarProduto">
+                    <h:panelGrid columns="1">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="pNome"
+                                           value="Produto: " />
+                            <p:inputText id="pNome"
+                                         value="#{produtoBean.produto.PNome}" 
+                                         required="true"
+                                         requiredMessage="Informe um nome para o produto" 
+                                         validatorMessage="Nome da conta deve ter no máximo 30 caracteres."
+                                         pt:placeholder="Ex.: Torre de Chopp, Refrigerante">
+                                <f:validateLength minimum="1" maximum="30" />
+                            </p:inputText>
+
+                            <p:outputLabel for="pPreco"
+                                           value="Preço:" />
+                            <p:inputText id="pPreco"
+                                         value="#{produtoBean.produto.PValor}" 
+                                         required="true"
+                                         requiredMessage="Informe um preço para conta" 
+                                         validatorMessage="O valor deve estar no intervalo de 1 a 1000000."
+                                         pt:placeholder="Ex.: 10.00">
+                                <f:validateLongRange minimum="1" maximum="1000000" />
+                                <f:convertNumber pattern="0.00" />
+                            </p:inputText>
+
+                            <p:outputLabel for="pUsuarios"
+                                           value="Usuários:" />
+                            <p:selectCheckboxMenu id="pUsuarios"
+                                                  label="usuários"
+                                                  value="#{produtoBean.selecionados}" 
+                                                  required="true" 
+                                                  requiredMessage="Informe ao menos uma pessoa para insirir o item."
+                                                  style="width: 100%">
+                                <f:selectItems value="#{conta.usuarioContaCollection}" 
+                                               var="usuarioConta"
+                                               itemLabel="#{usuarioConta.usuario.UNome}" 
+                                               itemValue="#{usuarioConta.usuario.UNome}" />
+                            </p:selectCheckboxMenu>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" style="float: right">
+                            <p:commandButton value="Adicionar" 
+                                             update=":tabView:formAdicionarProduto, :tabView:formInformacoes, :panelProdutos, :panelGerenciar"
+                                             action="#{produtoBean.cadastrarProduto()}">
+                                <p:resetInput target=":tabView:formAdicionarProduto" />
+                            </p:commandButton>
+
+                            <p:commandButton immediate="true"
+                                             value="Limpar" 
+                                             update=":tabView:formAdicionarProduto">
+                                <p:resetInput target=":tabView:formAdicionarProduto" />
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </h:form>
+            </p:tab>
+        </p:tabView>
+
+        <br />
+
+        <p:panel id="panelGerenciar"
+                 header="Gerenciar usuários">
+            <h:form>
+                <p:dataTable value="#{conta.usuarioContaCollection}"
+                             var="usuarioConta">
+                    <p:column headerText="Nome de usuário">
+                        <h:outputText value="#{usuarioConta.usuario.UNome}" />
+                    </p:column>
+
+                    <p:column headerText="Valor individual">
+                        <h:outputText value="#{usuarioConta.UCValor}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton action="#{usuarioContaBean.excluirUsuarioConta(usuarioConta)}"
+                                         update=":panelGerenciar, :tabView:formAdicionarProduto"
+                                         rendered="#{contaBean.renderButton(usuarioConta)}"
+                                         value="Remover" />
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton action="#{contaBean.tornarGerente(usuarioConta)}"
+                                         rendered="#{contaBean.renderButton(usuarioConta)}"
+                                         value="Tornar Gerente" />
+                    </p:column>
+                </p:dataTable> 
+            </h:form>
+        </p:panel>
+
+        <br />
+
+        <p:panel id="panelProdutos"
+                 header="Produtos">
+            <h:form id="form-data">
+                <p:dataTable value="#{conta.produtoCollection}" 
+                             var="p"
+                             emptyMessage="Nenhum produto cadastrado.">
+                    <p:column headerText="Produto"> 
+                        <h:outputText value="#{p.PNome}"/>
+                    </p:column>
+
+                    <p:column headerText="Quantidade de usuários"> 
+                        <h:outputText value ="#{p.qtdeUsuarioProduto()}" />
+                    </p:column> 
+
+                    <p:column headerText="Preço"> 
+                        <h:outputText value="#{p.PValor}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Detalhes">                       
+                        <p:rowToggler />
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="Editar" 
+                                         actionListener="#{produtoBean.editarProduto(p.PId)}"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="Deletar" 
+                                         update=":tabView:formInformacoes, :panelProdutos, :panelGerenciar"
+                                         actionListener="#{produtoBean.excluirProduto(p.PId)}" />
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <p:dataTable value="#{p.usuarioCollection}"
+                                     var="u1">
+                            <p:column headerText="Usuarios">
+                                <h:outputText value ="#{u1.UNome}"/>
+                            </p:column> 
+                        </p:dataTable>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </h:form> 
+        </p:panel>   
+    </h:body>
+</html>
+

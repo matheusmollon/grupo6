@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Editar Produto</title>
+    </h:head>
+    <h:body>
+        <p:growl autoUpdate="true" /> 
+        
+        <p:panel header="Editar produto">
+            <h:form>
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="pNome"
+                                       value="Produto: " />
+                        <p:inputText id="pNome"
+                                     value="#{produtoBean.produto.PNome}" 
+                                     required="true"
+                                     requiredMessage="Informe um nome para o produto" 
+                                     validatorMessage="Nome da conta deve ter no máximo 30 caracteres."
+                                     pt:placeholder="Ex.: Torre de Chopp, Refrigerante">
+                            <f:validateLength minimum="1" maximum="30" />
+                        </p:inputText>
+
+                        <p:outputLabel for="pPreco"
+                                       value="Preço:" />
+                        <p:inputText id="pPreco"
+                                     value="#{produtoBean.produto.PValor}" 
+                                     required="true"
+                                     requiredMessage="Informe um preço para conta" 
+                                     validatorMessage="O valor deve estar no intervalo de 1 a 1000000."
+                                     pt:placeholder="Ex.: 10.00">
+                            <f:validateLongRange minimum="1" maximum="1000000" />
+                        </p:inputText>
+
+                        <p:outputLabel for="pUsuarios"
+                                       value="Usuários:" />
+                        <p:selectCheckboxMenu id="pUsuarios"
+                                              label="usuários"
+                                              value="#{produtoBean.selecionados}" 
+                                              required="true" 
+                                              requiredMessage="Informe ao menos uma pessoa para insirir o item."
+                                              style="width: 100%">
+                            <f:selectItems value="#{contaBean.contaSession.usuarioContaCollection}" 
+                                           var="usuarioConta"
+                                           itemLabel="#{usuarioConta.usuario.UNome}" 
+                                           itemValue="#{usuarioConta.usuario.UNome}" />
+                        </p:selectCheckboxMenu>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" style="float: right">
+                        <p:commandButton value="Confirmar"
+                                         action="#{produtoBean.atualizarProduto()}"/>
+
+                        <p:commandButton immediate="true"
+                                         action="#{navigationBean.redirectGerenciarConta()}"
+                                         value="Cancelar" />
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+    </h:body>
+</html>
+

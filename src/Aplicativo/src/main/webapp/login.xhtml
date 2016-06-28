@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Bem-vindo</title>
+    </h:head>
+    <h:body> 
+        <p:growl autoUpdate="true" /> 
+        
+        <p:panel header="Bem-vindo ao Sistema Divisor de Contas">
+            <h:form>
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="unome" 
+                                       value="Nome de usuário: " />
+                        <p:inputText id="unome" 
+                                     required="true"
+                                     value="#{loginBean.usuario.UNome}"
+                                     requiredMessage="Informe o nome de usuário."
+                                     pt:autofocus="true" />
+
+                        <p:outputLabel for="usenha" 
+                                       value="Senha: " />
+                        <p:password id="usenha" 
+                                    required="true"
+                                    value="#{loginBean.usuario.USenha}"
+                                    requiredMessage="Informe a senha." />
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" 
+                                 style="float: right">
+                        <p:commandButton action="#{loginBean.login()}"
+                                         value="Entrar" />
+                        <p:commandButton immediate="true" 
+                                         action="#{navigationBean.redirectCadastroUsuario()}" 
+                                         value="Cadastrar" />
+                    </h:panelGrid>
+                </h:panelGrid>            
+            </h:form>
+        </p:panel>
+    </h:body>
+</html>
+

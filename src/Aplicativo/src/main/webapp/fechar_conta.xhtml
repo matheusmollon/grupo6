@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Fechar Conta</title>
+    </h:head>
+    <h:body>     
+        <p:growl autoUpdate="true" /> 
+
+        <c:set var="conta" value="#{contaBean.contaSession}" scope="request" />
+
+        <p:panel header="Fechar conta">
+            <h:form>
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="2">                
+                        <p:outputLabel for="cNome" 
+                                       value="Nome da conta: " />
+                        <h:outputText id="cNome" 
+                                      value="#{conta.CNome}" />
+
+                        <p:outputLabel for="cValor" 
+                                       value="Valor total: " />
+                        <h:outputText id="cValor" 
+                                      value="#{conta.CValor}">
+                            <f:convertNumber type="currency" currencySymbol="R$" />
+                        </h:outputText>
+
+                        <p:outputLabel for="taxaServico"
+                                       value="Taxa de serviço (%): " />
+                        <p:inputText id="taxaServico"
+                                     value="#{contaBean.conta.CTaxaServico}" 
+                                     required="true"
+                                     requiredMessage="Informe a taxa de serviço." 
+                                     validatorMessage="O valor deve estar no intervalo de 0 a 100."
+                                     pt:placeholder="Ex.: 5, 10, 15...">
+                            <f:validateLongRange minimum="0" maximum="100" />
+                        </p:inputText>
+
+                        <p:outputLabel for="divisaoTaxa" 
+                                       value="Divisão taxa de serviço: " />
+                        <p:selectOneRadio id="divisaoTaxa"
+                                          required="true"
+                                          requiredMessage="Escolha uma forma de divisão da taxa de consumo." 
+                                          validatorMessage="Escolha uma forma de divisão da taxa de consumo."
+                                          value="#{contaBean.divisao}">
+                            <f:selectItem itemLabel="igual"
+                                          itemValue="igual" />
+                            <f:selectItem itemLabel="por consumo"
+                                          itemValue="por consumo" />
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" style="float: right">
+                        <h:commandButton value="Confirmar"
+                                         action="#{contaBean.fecharConta()}" />
+                        <h:commandButton immediate="true" 
+                                         action="#{navigationBean.redirectGerenciarConta()}" 
+                                         value="Cancelar" />
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+    </h:body>
+</html>
+
